@@ -1,15 +1,16 @@
 class Libros {
-    constructor(titulo,autor,stock){
+    constructor(id,titulo,autor,stock){
+        this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.stock = stock;
     }
 };
 
-const libro1 = new Libros("Estructuras de hormigón armado", "Fritz Leonhardt", 0);
-const libro2 = new Libros("Orgullo y prejuicio", "Jane Austen", 3);
-const libro3 = new Libros("El principito", "Antoine de Saint-Exupéri", 5);
-const libro4 = new Libros("Bushido, el espiritú de Japón", "Inazo Nitobe", 0);
+const libro1 = new Libros(1, "Estructuras de hormigón armado", "Fritz Leonhardt", 2);
+const libro2 = new Libros(2, "Orgullo y prejuicio", "Jane Austen", 0);
+const libro3 = new Libros(3, "El principito", "Antoine de Saint-Exupéri", 5);
+const libro4 = new Libros(4, "Bushido, el espiritú de Japón", "Inazo Nitobe", 0);
 
 //Array de todos los libros.
 const biblioteca = [libro1, libro2, libro3, libro4];
@@ -25,12 +26,14 @@ function renderizarLibros(){
         </div>`
     )
 };
-/* renderizarLibros(); */
+renderizarLibros();
 
 // Boton mostrar solo los libros disponibles
-const disponibles = biblioteca.filter(libro => (libro.stock>0));
 const grupoBotones = document.getElementsByClassName('filtros');
+
 function renderizarDisponibles(){
+    seccionLibros.innerHTML = '';
+    const disponibles = biblioteca.filter(libro => (libro.stock>0));
     disponibles.forEach(libro => seccionLibros.innerHTML += `
         <div>
             <h3>${libro.titulo}</h3>
@@ -39,9 +42,13 @@ function renderizarDisponibles(){
         </div>`
     )
 };
-
-grupoBotones[0].addEventListener ('click', renderizarDisponibles());
-
+/* renderizarDisponibles(); */
+grupoBotones[0].addEventListener ('click', () => {
+    renderizarDisponibles();
+    grupoBotones[0].innerText = 'Mostrar todo';
+    }
+);
+console.log(grupoBotones);
 //Carrito
 const carrito = [];
 /* grupoBotones[1].addEventListener('click', aca la funcionde agregar objetos al array de carrito renderizarLibros());
