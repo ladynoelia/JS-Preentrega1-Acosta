@@ -1,18 +1,55 @@
-class libros {
-    constructor(titulo,autor,disponibilidad){
+class Libros {
+    constructor(titulo,autor,stock){
         this.titulo = titulo;
         this.autor = autor;
-        this.disponibilidad = disponibilidad;
+        this.stock = stock;
     }
-}
+};
 
-const libro1 = new libros("Estructuras de hormigón armado", "Fritz Leonhardt", false);
-const libro2 = new libros("Orgullo y prejuicio", "Jane Austen", true);
-const libro3 = new libros("El principito", "Antoine de Saint-Exupéri", true);
-const libro4 = new libros("Bushido, el espiritú de Japón", "Inazo Nitobe", false);
+const libro1 = new Libros("Estructuras de hormigón armado", "Fritz Leonhardt", 0);
+const libro2 = new Libros("Orgullo y prejuicio", "Jane Austen", 3);
+const libro3 = new Libros("El principito", "Antoine de Saint-Exupéri", 5);
+const libro4 = new Libros("Bushido, el espiritú de Japón", "Inazo Nitobe", 0);
 
-let opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
+//Array de todos los libros.
+const biblioteca = [libro1, libro2, libro3, libro4];
 
+const seccionLibros = document.getElementById('cardsbox');
+
+function renderizarLibros(){
+    biblioteca.forEach(libro => seccionLibros.innerHTML += `
+        <div>
+            <h3>${libro.titulo}</h3>
+            <h4>${libro.autor}</h4>
+            <button class='btn'>Reservar</button>
+        </div>`
+    )
+};
+/* renderizarLibros(); */
+
+// Boton mostrar solo los libros disponibles
+const disponibles = biblioteca.filter(libro => (libro.stock>0));
+const grupoBotones = document.getElementsByClassName('filtros');
+function renderizarDisponibles(){
+    disponibles.forEach(libro => seccionLibros.innerHTML += `
+        <div>
+            <h3>${libro.titulo}</h3>
+            <h4>${libro.autor}</h4>
+            <button class='btn'>Reservar</button>
+        </div>`
+    )
+};
+
+grupoBotones[0].addEventListener ('click', renderizarDisponibles());
+
+//Carrito
+const carrito = [];
+/* grupoBotones[1].addEventListener('click', aca la funcionde agregar objetos al array de carrito renderizarLibros());
+ */
+
+
+//let opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
+/* 
 function reservarLibro1 () {
     let nombreUsuario = prompt("¡El libro esta disponible!\nSi te gustaría reservarlo, ingresa tu nombre\nSino 'v' para volver al buscador");
     if (nombreUsuario == "v"){
@@ -20,33 +57,6 @@ function reservarLibro1 () {
     } else {
         console.log("Genial, " + nombreUsuario + ", el libro quedó reservado, pasalo a retirar cuando puedas");
         libro1.disponibilidad = false;
-    }
-}
-function reservarLibro2 () {
-    let nombreUsuario = prompt("¡El libro esta disponible!\nSi te gustaría reservarlo, ingresa tu nombre\nSino 'v' para volver al buscador");
-    if (nombreUsuario == "v"){
-        opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
-    } else {
-        console.log("Genial, " + nombreUsuario + ", el libro quedó reservado, pasalo a retirar cuando puedas");
-        libro2.disponibilidad = false;
-    }
-}
-function reservarLibro3 () {
-    let nombreUsuario = prompt("¡El libro esta disponible!\nSi te gustaría reservarlo, ingresa tu nombre\nSino 'v' para volver al buscador");
-    if (nombreUsuario == "v"){
-        opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
-    } else {
-        console.log("Genial, " + nombreUsuario + ", el libro quedó reservado, pasalo a retirar cuando puedas");
-        libro3.disponibilidad = false;
-    }
-}
-function reservarLibro4 () {
-    let nombreUsuario = prompt("¡El libro esta disponible!\nSi te gustaría reservarlo, ingresa tu nombre\nSino 'v' para volver al buscador");
-    if (nombreUsuario == "v"){
-        opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
-    } else {
-        console.log("Genial, " + nombreUsuario + ", el libro quedó reservado, pasalo a retirar cuando puedas");
-        libro4.disponibilidad = false;
     }
 }
 
@@ -84,4 +94,4 @@ while (opcion != "s"){
             console.log("Opción invalida");
     }
     opcion = prompt("Selecciona un titulo de la lista\n1 - "+ libro1.titulo + ", " + libro1.autor + "\n2 - "+ libro2.titulo + ", " + libro2.autor + "\n3 - "+ libro3.titulo + ", " + libro3.autor + "\n4 - "+ libro4.titulo + ", " + libro4.autor +"\ns - Salir");
-}
+} */
