@@ -24,15 +24,18 @@ function renderizarLibros(){
             <h4>${libro.autor}</h4>
             <button class='btn'>Reservar</button>
         </div>`
-    )
+    );
+    filtroMode = false;
+    grupoBotones[0].innerText = 'Libros disponibles';
 };
-renderizarLibros();
+/* renderizarLibros(); */
 
 // Boton mostrar solo los libros disponibles
 const grupoBotones = document.getElementsByClassName('filtros');
 
 function renderizarDisponibles(){
     seccionLibros.innerHTML = '';
+    grupoBotones[0].innerText = 'Mostrar todo';
     const disponibles = biblioteca.filter(libro => (libro.stock>0));
     disponibles.forEach(libro => seccionLibros.innerHTML += `
         <div>
@@ -40,15 +43,28 @@ function renderizarDisponibles(){
             <h4>${libro.autor}</h4>
             <button class='btn'>Reservar</button>
         </div>`
-    )
+    );
+    filtroMode = true;
 };
-/* renderizarDisponibles(); */
+
 grupoBotones[0].addEventListener ('click', () => {
-    renderizarDisponibles();
-    grupoBotones[0].innerText = 'Mostrar todo';
+    intercambiarFiltros();
     }
 );
-console.log(grupoBotones);
+/* console.log(grupoBotones); */
+let filtroMode = false;
+function intercambiarFiltros(){
+    if(!filtroMode){
+        renderizarDisponibles()
+    } else {
+        renderizarLibros()
+    }
+};
+
+
+
+
+
 //Carrito
 const carrito = [];
 /* grupoBotones[1].addEventListener('click', aca la funcionde agregar objetos al array de carrito renderizarLibros());

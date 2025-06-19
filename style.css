@@ -14,7 +14,7 @@ header{
     padding: 50px 0;
     position: fixed;
 }
-.nombre {
+.nombre{
     color: white;
     margin: 5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -63,7 +63,7 @@ body{
     border: none;
     border-radius: 5px;
     padding: 0.7em;
-    background-color: grey;
+    background-color: darkgray;
     color: white;
 }
 #cardsbox div:hover{
