@@ -18,6 +18,7 @@ const biblioteca = [libro1, libro2, libro3, libro4];
 const seccionLibros = document.getElementById('cardsbox');
 
 function renderizarLibros(){
+    seccionLibros.innerHTML = '';    
     biblioteca.forEach(libro => seccionLibros.innerHTML += `
         <div>
             <h3>${libro.titulo}</h3>
@@ -25,12 +26,10 @@ function renderizarLibros(){
             <button class='btn'>Reservar</button>
         </div>`
     );
-    filtroMode = false;
-    grupoBotones[0].innerText = 'Libros disponibles';
 };
-/* renderizarLibros(); */
+renderizarLibros();
 
-// Boton mostrar solo los libros disponibles
+// Boton intercambiable para mostrar solo los libros disponibles
 const grupoBotones = document.getElementsByClassName('filtros');
 
 function renderizarDisponibles(){
@@ -51,15 +50,19 @@ grupoBotones[0].addEventListener ('click', () => {
     intercambiarFiltros();
     }
 );
-/* console.log(grupoBotones); */
+
 let filtroMode = false;
 function intercambiarFiltros(){
     if(!filtroMode){
         renderizarDisponibles()
     } else {
-        renderizarLibros()
+        renderizarLibros();
+        grupoBotones[0].innerText = 'Libros disponibles';
+        filtroMode = false;
     }
 };
+
+//Función de reservar
 
 
 
