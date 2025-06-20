@@ -14,25 +14,29 @@ const libro4 = new Libros(4, "Bushido, el espiritú de Japón", "Inazo Nitobe", 
 
 //Array de todos los libros.
 const biblioteca = [libro1, libro2, libro3, libro4];
-
+//Elementos del Html
 const seccionLibros = document.getElementById('cardsbox');
+const grupoBotones = document.getElementsByClassName('filtros');
+const grupBtnReservar = document.getElementsByClassName('btn');
 
-function renderizarLibros(){
+const disponibles = biblioteca.filter(libro => (libro.stock>0));
+
+//Primer intento
+/* function renderizarLibros(){
     seccionLibros.innerHTML = '';    
     biblioteca.forEach(libro => seccionLibros.innerHTML += `
         <div>
             <h3>${libro.titulo}</h3>
             <h4>${libro.autor}</h4>
-            <button class='btn'>Reservar</button>
+            <h5>Disponibles: ${libro.stock}</h5>
+            <button id='${libro.id}' class='btn'>Reservar</button>
         </div>`
-    );
+    );    
 };
-renderizarLibros();
+renderizarLibros(); */
 
-// Boton intercambiable para mostrar solo los libros disponibles
-const grupoBotones = document.getElementsByClassName('filtros');
-
-function renderizarDisponibles(){
+// Boton para mostrar solo los libros disponibles
+/* function renderizarDisponibles(){
     seccionLibros.innerHTML = '';
     grupoBotones[0].innerText = 'Mostrar todo';
     const disponibles = biblioteca.filter(libro => (libro.stock>0));
@@ -40,10 +44,12 @@ function renderizarDisponibles(){
         <div>
             <h3>${libro.titulo}</h3>
             <h4>${libro.autor}</h4>
-            <button class='btn'>Reservar</button>
+            <h5>Disponibles: ${libro.stock}</h5>
+            <button id='${libro.id}' class='btn'>Reservar</button>
         </div>`
     );
     filtroMode = true;
+    reservarLibro();
 };
 
 grupoBotones[0].addEventListener ('click', () => {
@@ -59,14 +65,85 @@ function intercambiarFiltros(){
         renderizarLibros();
         grupoBotones[0].innerText = 'Libros disponibles';
         filtroMode = false;
+        reservarLibro();
     }
 };
 
 //Función de reservar
+function reservarLibro() {
+    for (const button of grupBtnReservar) {
+        button.addEventListener('click', () => {
+            alert('Función de reservar en construcción')
+            if (button.stock>0) {
+                let nombreUsuario = prompt("Ingresa tu nombre para reservarlo\nSino 'v' para volver al buscador");
 
+            } else {
+                alert(`El libro ${button.id} no esta disponible`);
+            }        
+        })
+    }
+};
+/* reservarLibro(); */
 
+//Segundo intento
+function renderizarLibros(){        
+    biblioteca.forEach(libro => seccionLibros.innerHTML += `
+        <div>
+            <h3>${libro.titulo}</h3>
+            <h4>${libro.autor}</h4>
+            <h5>Disponibles: ${libro.stock}</h5>
+            <button id='${libro.id}' class='btn'>Reservar</button>
+        </div>`
+    );
+    reservarLibro();  
+};
+renderizarLibros();
 
+function reservarLibro() {
+    for (const button of grupBtnReservar) {
+        button.addEventListener('click', () => {
+            const libroSeleccionado = biblioteca.find(libro => libro.id === Number(button.id));
+            if (libroSeleccionado.stock>0){
+                alert('Sigo trabajando en la Función de reservar');
+            } else {
+                button.innerText = 'Sin stock';                
+                alert('El libro no figura en stock o se encuentra reservado.');
+            }                             
+        })
+    }
+};
 
+/* function cambiarBoton() {
+    for (const button of grupBtnReservar) {
+        const sinStock = biblioteca.filter(libro => (libro.stock<=0));
+        if (sinStock){
+            button.innerText = 'sfdsdf';                
+        }
+    }
+};
+cambiarBoton(); */
+
+// Boton para mostrar solo los libros disponibles
+function mostrarDisponibles(){
+    seccionLibros.innerHTML = '';
+    grupoBotones[0].innerText = 'Mostrar todo';
+    const disponibles = biblioteca.filter(libro => (libro.stock>0));
+    disponibles.forEach(libro => seccionLibros.innerHTML += `
+        <div>
+            <h3>${libro.titulo}</h3>
+            <h4>${libro.autor}</h4>
+            <h5>Disponibles: ${libro.stock}</h5>
+            <button id='${libro.id}' class='btn'>Reservar</button>
+        </div>`
+    );
+    /* filtroMode = true; */
+    reservarLibro();
+};
+
+grupoBotones[0].addEventListener ('click', () => {
+    mostrarDisponibles();
+    }
+);
 
 //Carrito
 const carrito = [];
