@@ -7,10 +7,10 @@ class Libros {
     }
 };
 
-const libro1 = new Libros(1, "Estructuras de hormigón armado", "Fritz Leonhardt", 2);
-const libro2 = new Libros(2, "Orgullo y prejuicio", "Jane Austen", 0);
-const libro3 = new Libros(3, "El principito", "Antoine de Saint-Exupéri", 5);
-const libro4 = new Libros(4, "Bushido, el espiritú de Japón", "Inazo Nitobe", 0);
+const libro1 = new Libros(1, "Estructuras de hormigón armado", "Fritz Leonhardt", 0);
+const libro2 = new Libros(2, "Orgullo y prejuicio", "Jane Austen", 1);
+const libro3 = new Libros(3, "El principito", "Antoine de Saint-Exupéri", 0);
+const libro4 = new Libros(4, "Bushido, el espiritú de Japón", "Inazo Nitobe", 3);
 
 //Array de todos los libros.
 const biblioteca = [libro1, libro2, libro3, libro4];
@@ -21,81 +21,23 @@ const grupBtnReservar = document.getElementsByClassName('btn');
 
 const disponibles = biblioteca.filter(libro => (libro.stock>0));
 
-//Primer intento
-/* function renderizarLibros(){
-    seccionLibros.innerHTML = '';    
-    biblioteca.forEach(libro => seccionLibros.innerHTML += `
-        <div>
-            <h3>${libro.titulo}</h3>
-            <h4>${libro.autor}</h4>
-            <h5>Disponibles: ${libro.stock}</h5>
-            <button id='${libro.id}' class='btn'>Reservar</button>
-        </div>`
-    );    
-};
-renderizarLibros(); */
-
-// Boton para mostrar solo los libros disponibles
-/* function renderizarDisponibles(){
-    seccionLibros.innerHTML = '';
-    grupoBotones[0].innerText = 'Mostrar todo';
-    const disponibles = biblioteca.filter(libro => (libro.stock>0));
-    disponibles.forEach(libro => seccionLibros.innerHTML += `
-        <div>
-            <h3>${libro.titulo}</h3>
-            <h4>${libro.autor}</h4>
-            <h5>Disponibles: ${libro.stock}</h5>
-            <button id='${libro.id}' class='btn'>Reservar</button>
-        </div>`
-    );
-    filtroMode = true;
-    reservarLibro();
-};
-
-grupoBotones[0].addEventListener ('click', () => {
-    intercambiarFiltros();
-    }
-);
-
-let filtroMode = false;
-function intercambiarFiltros(){
-    if(!filtroMode){
-        renderizarDisponibles()
-    } else {
-        renderizarLibros();
-        grupoBotones[0].innerText = 'Libros disponibles';
-        filtroMode = false;
-        reservarLibro();
-    }
-};
-
-//Función de reservar
-function reservarLibro() {
-    for (const button of grupBtnReservar) {
-        button.addEventListener('click', () => {
-            alert('Función de reservar en construcción')
-            if (button.stock>0) {
-                let nombreUsuario = prompt("Ingresa tu nombre para reservarlo\nSino 'v' para volver al buscador");
-
-            } else {
-                alert(`El libro ${button.id} no esta disponible`);
-            }        
-        })
-    }
-};
-/* reservarLibro(); */
-
 //Segundo intento
-function renderizarLibros(){        
+let soloDisponibles = false;
+function renderizarLibros(){
+    seccionLibros.innerHTML = '';        
     biblioteca.forEach(libro => seccionLibros.innerHTML += `
         <div>
             <h3>${libro.titulo}</h3>
             <h4>${libro.autor}</h4>
             <h5>Disponibles: ${libro.stock}</h5>
-            <button id='${libro.id}' class='btn'>Reservar</button>
+            <button id='${libro.id}' class='btn' ${libro.stock === 0 ? 'disabled' : ''}>
+                ${libro.stock === 0 ? 'Sin stock' : 'Reservar'}
+            </button>
         </div>`
     );
-    reservarLibro();  
+    reservarLibro();
+    soloDisponibles = false;
+    grupoBotones[0].innerText = 'Libros disponibles';
 };
 renderizarLibros();
 
@@ -105,28 +47,15 @@ function reservarLibro() {
             const libroSeleccionado = biblioteca.find(libro => libro.id === Number(button.id));
             if (libroSeleccionado.stock>0){
                 alert('Sigo trabajando en la Función de reservar');
-            } else {
-                button.innerText = 'Sin stock';                
-                alert('El libro no figura en stock o se encuentra reservado.');
-            }                             
+            }                            
         })
     }
 };
 
-/* function cambiarBoton() {
-    for (const button of grupBtnReservar) {
-        const sinStock = biblioteca.filter(libro => (libro.stock<=0));
-        if (sinStock){
-            button.innerText = 'sfdsdf';                
-        }
-    }
-};
-cambiarBoton(); */
-
 // Boton para mostrar solo los libros disponibles
 function mostrarDisponibles(){
     seccionLibros.innerHTML = '';
-    grupoBotones[0].innerText = 'Mostrar todo';
+    grupoBotones[0].innerText = 'Mostrar todos los libros';
     const disponibles = biblioteca.filter(libro => (libro.stock>0));
     disponibles.forEach(libro => seccionLibros.innerHTML += `
         <div>
@@ -136,14 +65,23 @@ function mostrarDisponibles(){
             <button id='${libro.id}' class='btn'>Reservar</button>
         </div>`
     );
-    /* filtroMode = true; */
+    soloDisponibles = true;
     reservarLibro();
 };
 
 grupoBotones[0].addEventListener ('click', () => {
-    mostrarDisponibles();
+    intercambiarFiltros();
     }
 );
+function intercambiarFiltros(){
+    if(!soloDisponibles){
+        mostrarDisponibles()
+    } else {
+        renderizarLibros();
+    }
+};
+
+
 
 //Carrito
 const carrito = [];
