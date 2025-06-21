@@ -18,10 +18,13 @@ const biblioteca = [libro1, libro2, libro3, libro4];
 const seccionLibros = document.getElementById('cardsbox');
 const grupoBotones = document.getElementsByClassName('filtros');
 const grupBtnReservar = document.getElementsByClassName('btn');
+const btnConfirmar = document.getElementById('btn_conf');
 
 const disponibles = biblioteca.filter(libro => (libro.stock>0));
+//Array del carrito
+const reservados = [];
 
-//Segundo intento
+
 let soloDisponibles = false;
 function renderizarLibros(){
     seccionLibros.innerHTML = '';        
@@ -44,15 +47,60 @@ renderizarLibros();
 function reservarLibro() {
     for (const button of grupBtnReservar) {
         button.addEventListener('click', () => {
-            const libroSeleccionado = biblioteca.find(libro => libro.id === Number(button.id));
-            if (libroSeleccionado.stock>0){
-                alert('Sigo trabajando en la Función de reservar');
+            const libroSeleccionado = biblioteca.find(libro => libro.id === parseInt(button.id));
+            if (libroSeleccionado){
+                alert(`Agregaste "${libroSeleccionado.titulo}" a la sección de Mis reservas.`);
+                reservados.push(libroSeleccionado);
             }                            
         })
     }
 };
 
-// Boton para mostrar solo los libros disponibles
+// Boton Mis reservas ----------------------------------------------------------------
+function mostrarEstado(){
+    seccionLibros.innerHTML += `
+    <div class='menu_reservas'>
+        <h3>Bienvenid@</h3>
+        <h4>Estos son los libros reservados hasta en momento</h4>
+        <button id='btn_conf'>Confirmar reservaciones</button>
+        <button class='btn'>Borrar todo</button>
+    </div>`
+};
+function mostrarReservados(){    
+    reservados.forEach(libro => seccionLibros.innerHTML += `
+        <div>
+            <h3>${libro.titulo}</h3>
+            <h4>${libro.autor}</h4>            
+            <button id='${libro.id}' class='btn'>Cancelar reservación</button>
+        </div>`
+    );
+};
+
+grupoBotones[1].addEventListener ('click', () => {
+    seccionLibros.innerHTML = '';    
+    mostrarEstado();   
+    mostrarReservados();
+    }
+);
+
+// Botones dentro de la sección Mis reservas --------------------------------------------------
+let usuarioActivo = localStorage.getItem('usuario');
+
+/* btnConfirmar.addEventListener ('click', () => {
+    guardarNombreUsuario();
+    }    
+); */
+function guardarNombreUsuario(){
+    const nombreUsuario = prompt('Ingresa tu nombre para registrar tus pedidos');
+    if (nombreUsuario != null){
+        localStorage.setItem('usuario', nombreUsuario);
+    }    
+};
+
+
+/* localStorage.removeItem('usuario'); */
+
+// Boton para mostrar solo los libros disponibles -----------------------------------------
 function mostrarDisponibles(){
     seccionLibros.innerHTML = '';
     grupoBotones[0].innerText = 'Mostrar todos los libros';
@@ -81,10 +129,9 @@ function intercambiarFiltros(){
     }
 };
 
+//
 
 
-//Carrito
-const carrito = [];
 /* grupoBotones[1].addEventListener('click', aca la funcionde agregar objetos al array de carrito renderizarLibros());
  */
 

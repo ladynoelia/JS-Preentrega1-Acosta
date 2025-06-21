@@ -81,7 +81,17 @@ body{
     transform: translateY(-10px);
     box-shadow: 1.25px 1.25px 10px grey;
 }
-
+/* Botones dentro de la sección Mis reservas -------------------------------------------------- */
+#btn_conf {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7em;
+    margin: 5px;
+    background-color: darkgray;
+    color: white;
+    cursor: pointer;
+}
 /* footer{    
     background-color: darkgray;
     color: white;
