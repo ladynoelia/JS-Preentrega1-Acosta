@@ -18,7 +18,6 @@ const biblioteca = [libro1, libro2, libro3, libro4];
 const seccionLibros = document.getElementById('cardsbox');
 const grupoBotones = document.getElementsByClassName('filtros');
 const grupBtnReservar = document.getElementsByClassName('btn');
-const btnConfirmar = document.getElementById('btn_conf');
 
 const disponibles = biblioteca.filter(libro => (libro.stock>0));
 //Array del carrito
@@ -56,16 +55,35 @@ function reservarLibro() {
     }
 };
 
-// Boton Mis reservas ----------------------------------------------------------------
+// Sección Mis reservas ----------------------------------------------------------------
+let usuarioActivo = localStorage.getItem('usuario');
+
+function guardarNombreUsuario(){
+    const nombreUsuario = prompt('Ingresa tu nombre para registrar tus pedidos');
+    if (nombreUsuario != null){
+        localStorage.setItem('usuario', nombreUsuario);
+    }    
+};
+
 function mostrarEstado(){
     seccionLibros.innerHTML += `
     <div class='menu_reservas'>
         <h3>Bienvenid@</h3>
-        <h4>Estos son los libros reservados hasta en momento</h4>
-        <button id='btn_conf'>Confirmar reservaciones</button>
-        <button class='btn'>Borrar todo</button>
+        <h4>${usuarioActivo} estos son los libros reservados hasta en momento</h4>
+        <button class='btn_mr'>Confirmar reservaciones</button>
+        <button class='btn_mr'>Borrar todo</button>
     </div>`
+    const btnsMisReservas = document.getElementsByClassName('btn_mr');
+    btnsMisReservas[0].addEventListener('click', () => {
+        guardarNombreUsuario();
+    }
+    );
+    btnsMisReservas[1].addEventListener('click', () => {
+        alert('ay');
+    }
+    );
 };
+
 function mostrarReservados(){    
     reservados.forEach(libro => seccionLibros.innerHTML += `
         <div>
@@ -84,18 +102,9 @@ grupoBotones[1].addEventListener ('click', () => {
 );
 
 // Botones dentro de la sección Mis reservas --------------------------------------------------
-let usuarioActivo = localStorage.getItem('usuario');
 
-/* btnConfirmar.addEventListener ('click', () => {
-    guardarNombreUsuario();
-    }    
-); */
-function guardarNombreUsuario(){
-    const nombreUsuario = prompt('Ingresa tu nombre para registrar tus pedidos');
-    if (nombreUsuario != null){
-        localStorage.setItem('usuario', nombreUsuario);
-    }    
-};
+
+/*  */
 
 
 /* localStorage.removeItem('usuario'); */

@@ -82,7 +82,7 @@ body{
     box-shadow: 1.25px 1.25px 10px grey;
 }
 /* Botones dentro de la sección Mis reservas -------------------------------------------------- */
-#btn_conf {
+.btn_mr {
     width: 100%;
     border: none;
     border-radius: 5px;
