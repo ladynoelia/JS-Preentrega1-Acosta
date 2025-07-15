@@ -63,7 +63,7 @@ body{
     transition: all 0.25s cubic-bezier(0.645,0.045,0.355,1);
     background-color: white;
 }
-#cardsbox div h5 {
+#cardsbox div h4 {
     color: grey;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -82,7 +82,8 @@ body{
     box-shadow: 1.25px 1.25px 10px grey;
 }
 /* Botones dentro de la sección Mis reservas -------------------------------------------------- */
-.btn_mr {
+#btn-confirmar
+#btn-borrar {
     width: 100%;
     border: none;
     border-radius: 5px;
