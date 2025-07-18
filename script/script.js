@@ -29,7 +29,7 @@ const btnCancelar = document.getElementsByClassName('btn-cancel');
 const btnsMisReservas = document.getElementsByClassName('btn-mr');
 
 //Array de los materiales reservados ----------------------------------------------------------------
-const reservados = [];
+const agregadosAlCarrito = [];
 
 //funciones ppales ----------------------------------------------------------------
 function renderizarTarjertas(arrayDeMateriales){
@@ -39,27 +39,27 @@ function renderizarTarjertas(arrayDeMateriales){
             <h3>${material.titulo}</h3>
             <h4>Disponibles: ${material.stock}</h4>
             <button id='${material.id}' class='btn' ${material.stock === 0 ? 'disabled' : ''}>
-                ${material.stock === 0 ? 'Todo reservado' : 'Reservar'}
+                ${material.stock === 0 ? 'Todo reservado' : 'Agregar a la Bolsa'}
             </button>
         </div>`
     );
-    reservarMaterial();
+    agregarMaterial();
 };
 
 renderizarTarjertas(materialDidactico);
 
-function reservarMaterial() {
+function agregarMaterial() {
     for (const button of grupBtnReservar) {
         button.addEventListener('click', () => {
             const materialSeleccionado = materialDidactico.find(material => material.id === parseInt(button.id));
             if (materialSeleccionado){
                 Toastify({
-                    text: `Agregaste "${materialSeleccionado.titulo}" a la sección de Mis reservas.`,
+                    text: `Agregaste "${materialSeleccionado.titulo}" a la Bolsa de materiales.`,
                     duration: 3000,
                     position: "center",
                     gravity: "top",
                 }).showToast();                
-                reservados.push(materialSeleccionado);
+                agregadosAlCarrito.push(materialSeleccionado);                
             }                            
         })
     }
@@ -96,19 +96,19 @@ grupoBotones[3].addEventListener('click', () => {
 grupoBotones[4].addEventListener('click', () => {
     seccionTarjetas.innerHTML = '';
     mostrarEstado();    
-    mostrarReservados();
-    cancelarReserva();
-    confirmarReserva();
-    borrarReservados();
+    mostrarAgregados();
+    quitarMaterial();
+    reservarMaterial();
+    borrarTodo();
     }
 );
 
-function mostrarReservados(){
-    reservados.forEach(material => seccionTarjetas.innerHTML += `
+function mostrarAgregados(){
+    agregadosAlCarrito.forEach(material => seccionTarjetas.innerHTML += `
         <div>
             <h3>${material.titulo}</h3>
             <h4>Cantidad: 1</h4>           
-            <button id='${material.id}' class='btn-cancel'>Cancelar reservación</button>
+            <button id='${material.id}' class='btn-cancel'>Eliminar</button>
         </div>`
     );
 };
@@ -117,8 +117,8 @@ function mostrarEstado(){
     seccionTarjetas.innerHTML += `
     <div class='menu_reservas'>
         <h3>Bienvenid@</h3>
-        <h4>Estos son los materiales reservados hasta el momento</h4>
-        <button class='btn-mr'>Confirmar reservaciones</button>
+        <h4>Estos son los materiales seleccionados para préstamo hasta el momento</h4>
+        <button class='btn-mr'>Reservar material</button>
         <button class='btn-mr'>Borrar todo</button>
     </div>`
     
@@ -126,19 +126,19 @@ function mostrarEstado(){
 
 // Botones dentro de la sección Mis reservas --------------------------------------------------
 // Para cancelar reservas
-function cancelarReserva() {
+function quitarMaterial() {
     for (const button of btnCancelar) {
         button.addEventListener('click', () => {
-            const materialDeseleccionado = reservados.find(material => material.id === parseInt(button.id));
+            const materialDeseleccionado = agregadosAlCarrito.find(material => material.id === parseInt(button.id));
             if (materialDeseleccionado){                
                 Toastify({
-                    text: `"${materialDeseleccionado.titulo}" eliminado de Mis reservas.`,
+                    text: `"${materialDeseleccionado.titulo}" eliminado de la Bolsa de materiales.`,
                     duration: 3000,
                     position: "center",
                     gravity: "top",
                 }).showToast();
-                let posicionAEliminar = reservados.indexOf(materialDeseleccionado,0);
-                reservados.splice(posicionAEliminar,1);                
+                let posicionAEliminar = agregadosAlCarrito.indexOf(materialDeseleccionado,0);
+                agregadosAlCarrito.splice(posicionAEliminar,1);                
             }                            
         })
     }    
@@ -147,7 +147,7 @@ function cancelarReserva() {
 // Error al reservar
 function mostrarError(){
     Toastify({
-        text: "No hay material reservado todavía",
+        text: "No hay material agregado a la Bolsa todavía",
         duration: 3000,
         position: "center",
         gravity: "top",
@@ -155,9 +155,9 @@ function mostrarError(){
 }
 
 // Para confirmar reservas
-function confirmarReserva(){
+function reservarMaterial(){
     btnsMisReservas[0].addEventListener('click', async () => {
-        if(reservados.length == 0){
+        if(agregadosAlCarrito.length == 0){
             mostrarError();
         } else {
             ingresarDatos();
@@ -167,13 +167,13 @@ function confirmarReserva(){
 
 async function ingresarDatos(){
     const { value: formValues } = await Swal.fire({
-        title: "Ingresá tu nombre y selecciona la fecha de uso",
+        title: "Completá con tus datos",
         input: "text",
         inputLabel: "Apellido y Nombre:",
         focusConfirm: false,
         showCancelButton: true,
         confirmButtonText: `
-            Continue&nbsp;<i class="fa fa-arrow-right"></i>
+            Continuar&nbsp;<i class="fa fa-arrow-right"></i>
         `,
         inputValidator: (value) => {
             if (!value) {
@@ -188,7 +188,7 @@ async function ingresarDatos(){
 
 async function elegirFecha(){
     const { value: date } = await Swal.fire({
-        title: "select departure date",
+        title: "Selecciona el día del préstamo",
         input: "date",
         didOpen: () => {
             const today = (new Date()).toISOString();
@@ -205,15 +205,21 @@ async function elegirFecha(){
             title: "¡Hecho!",
             text:"Tus materiales fueron reservados.",
             icon: "success"
-        });
-        vaciarCarrito();
+        });        
+        guardarBolsa();
+        vaciarBolsa();
     }
 };
 
+// Guardar de datos en localstorage
+function guardarBolsa(){
+    localStorage.setItem('bolsa',JSON.stringify(agregadosAlCarrito));
+};
+
 // Para borrar todo
-function borrarReservados(){
+function borrarTodo(){
     btnsMisReservas[1].addEventListener('click', () => {
-        if (reservados.length == 0){
+        if (agregadosAlCarrito.length == 0){
             mostrarError();
         } else {
             confirmarBorrar();
@@ -223,8 +229,8 @@ function borrarReservados(){
 
 function confirmarBorrar(){
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "¿Estas seguro?",
+        text: "Esta acción no se puede deshacer",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -238,35 +244,16 @@ function confirmarBorrar(){
                 text: "Tus materiales fueron borrados.",
                 icon: "success"
             });
-            vaciarCarrito();
+            vaciarBolsa();
         }
     });
 };
 
-function vaciarCarrito(){
-    reservados.splice(0, reservados.length);
-};
-
-//let usuarioActivo = localStorage.getItem('usuario');
-
-function guardarNombreUsuario(){
-    const nombreUsuario = document.getElementById;
-    if (nombreUsuario != null){
-        localStorage.setItem('usuario', nombreUsuario);
-    } else {
-        Toastify({
-            text: `Operación cancelada.`,
-            duration: 3000,
-            position: "center",
-            gravity: "top",
-        }).showToast();
-    }  
+function vaciarBolsa(){
+    agregadosAlCarrito.splice(0, agregadosAlCarrito.length);
 };
 
 
 
+/* localStorage.removeItem('bolsa'); */
 
-/* localStorage.removeItem('usuario'); */
-
-
-//Fecha
