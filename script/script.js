@@ -68,41 +68,30 @@ function agregarMaterial() {
 
 // Botón Biblioteca ----------------------------------------------------------------
 const biblioteca = materialDidactico.filter(material => material.grup == 1);
-grupoBotones[0].addEventListener('click', () => {
-        renderizarTarjertas(biblioteca);
-    }
-);
+grupoBotones[0].addEventListener('click', () => renderizarTarjertas(biblioteca));
 
 // Botón Audiovisual ----------------------------------------------------------------
 const audiovisual = materialDidactico.filter(material => material.grup == 2);
-grupoBotones[1].addEventListener('click', () => {
-        renderizarTarjertas(audiovisual);
-    }
-);
+grupoBotones[1].addEventListener('click', () => renderizarTarjertas(audiovisual));
 
 // Botón Aulas ----------------------------------------------------------------
 const aulas = materialDidactico.filter(material => material.grup == 3);
-grupoBotones[2].addEventListener('click', () => {
-        renderizarTarjertas(aulas);
-    }
-);
+grupoBotones[2].addEventListener('click', () => renderizarTarjertas(aulas));
 
 // Botón Mostrar todo ----------------------------------------------------------------
-grupoBotones[3].addEventListener('click', () => {
-        renderizarTarjertas(materialDidactico);
-    }
-);
+grupoBotones[3].addEventListener('click', () => renderizarTarjertas(materialDidactico));
 
-// Botón Mis reservas ----------------------------------------------------------------
-grupoBotones[4].addEventListener('click', () => {
+// Botón Bolsa de materiales ----------------------------------------------------------------
+grupoBotones[4].addEventListener('click', () => renderizarBolsa());
+
+function renderizarBolsa(){
     seccionTarjetas.innerHTML = '';
     mostrarEstado();    
     mostrarAgregados();
     quitarMaterial();
     reservarMaterial();
     borrarTodo();
-    }
-);
+};
 
 function mostrarAgregados(){
     agregadosALaBolsa.forEach(material => seccionTarjetas.innerHTML += `
@@ -140,7 +129,8 @@ function quitarMaterial() {
                 }).showToast();
                 let posicionAEliminar = agregadosALaBolsa.indexOf(materialDeseleccionado,0);                
                 agregadosALaBolsa.splice(posicionAEliminar,1);                
-                localStorage.setItem('bolsaGuardada', JSON.stringify(agregadosALaBolsa));              
+                localStorage.setItem('bolsaGuardada', JSON.stringify(agregadosALaBolsa));
+                renderizarBolsa();             
             }                            
         })
     }    
@@ -209,6 +199,7 @@ async function elegirFecha(){
             icon: "success"
         });        
         vaciarBolsa();
+        renderizarBolsa();
     }
 };
 
@@ -241,6 +232,7 @@ function confirmarBorrar(){
                 icon: "success"
             });
             vaciarBolsa();
+            renderizarBolsa();
         }
     });
 };
