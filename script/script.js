@@ -29,7 +29,7 @@ const btnCancelar = document.getElementsByClassName('btn-cancel');
 const btnsMisReservas = document.getElementsByClassName('btn-mr');
 
 //Array de los materiales reservados ----------------------------------------------------------------
-const agregadosAlCarrito = [];
+const agregadosALaBolsa = JSON.parse(localStorage.getItem('bolsaGuardada')) || [];
 
 //funciones ppales ----------------------------------------------------------------
 function renderizarTarjertas(arrayDeMateriales){
@@ -59,7 +59,8 @@ function agregarMaterial() {
                     position: "center",
                     gravity: "top",
                 }).showToast();                
-                agregadosAlCarrito.push(materialSeleccionado);                
+                agregadosALaBolsa.push(materialSeleccionado);
+                localStorage.setItem('bolsaGuardada',JSON.stringify(agregadosALaBolsa));                
             }                            
         })
     }
@@ -104,7 +105,7 @@ grupoBotones[4].addEventListener('click', () => {
 );
 
 function mostrarAgregados(){
-    agregadosAlCarrito.forEach(material => seccionTarjetas.innerHTML += `
+    agregadosALaBolsa.forEach(material => seccionTarjetas.innerHTML += `
         <div>
             <h3>${material.titulo}</h3>
             <h4>Cantidad: 1</h4>           
@@ -129,7 +130,7 @@ function mostrarEstado(){
 function quitarMaterial() {
     for (const button of btnCancelar) {
         button.addEventListener('click', () => {
-            const materialDeseleccionado = agregadosAlCarrito.find(material => material.id === parseInt(button.id));
+            const materialDeseleccionado = agregadosALaBolsa.find(material => material.id === parseInt(button.id));
             if (materialDeseleccionado){                
                 Toastify({
                     text: `"${materialDeseleccionado.titulo}" eliminado de la Bolsa de materiales.`,
@@ -137,8 +138,9 @@ function quitarMaterial() {
                     position: "center",
                     gravity: "top",
                 }).showToast();
-                let posicionAEliminar = agregadosAlCarrito.indexOf(materialDeseleccionado,0);
-                agregadosAlCarrito.splice(posicionAEliminar,1);                
+                let posicionAEliminar = agregadosALaBolsa.indexOf(materialDeseleccionado,0);                
+                agregadosALaBolsa.splice(posicionAEliminar,1);                
+                localStorage.setItem('bolsaGuardada', JSON.stringify(agregadosALaBolsa));              
             }                            
         })
     }    
@@ -152,12 +154,12 @@ function mostrarError(){
         position: "center",
         gravity: "top",
     }).showToast();
-}
+};
 
 // Para confirmar reservas
 function reservarMaterial(){
     btnsMisReservas[0].addEventListener('click', async () => {
-        if(agregadosAlCarrito.length == 0){
+        if(agregadosALaBolsa.length == 0){
             mostrarError();
         } else {
             ingresarDatos();
@@ -206,20 +208,14 @@ async function elegirFecha(){
             text:"Tus materiales fueron reservados.",
             icon: "success"
         });        
-        guardarBolsa();
         vaciarBolsa();
     }
-};
-
-// Guardar de datos en localstorage
-function guardarBolsa(){
-    localStorage.setItem('bolsa',JSON.stringify(agregadosAlCarrito));
 };
 
 // Para borrar todo
 function borrarTodo(){
     btnsMisReservas[1].addEventListener('click', () => {
-        if (agregadosAlCarrito.length == 0){
+        if (agregadosALaBolsa.length == 0){
             mostrarError();
         } else {
             confirmarBorrar();
@@ -229,7 +225,7 @@ function borrarTodo(){
 
 function confirmarBorrar(){
     Swal.fire({
-        title: "¿Estas seguro?",
+        title: "¿Estas segur@?",
         text: "Esta acción no se puede deshacer",
         icon: "warning",
         showCancelButton: true,
@@ -250,10 +246,6 @@ function confirmarBorrar(){
 };
 
 function vaciarBolsa(){
-    agregadosAlCarrito.splice(0, agregadosAlCarrito.length);
+    agregadosALaBolsa.splice(0, agregadosALaBolsa.length);
+    localStorage.removeItem('bolsaGuardada');
 };
-
-
-
-/* localStorage.removeItem('bolsa'); */
-
