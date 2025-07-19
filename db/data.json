@@ -1,0 +1,74 @@
+[
+    {
+        "grup": 1,
+        "id": 11,
+        "titulo": "Estructuras de hormigón armado, Fritz Leonhardt",        
+        "stock":0
+    },
+    {
+        "grup": 1,
+        "id": 12,
+        "titulo": "Orgullo y prejuicio, Jane Austen",        
+        "stock":1
+    },
+    {
+        "grup": 1,
+        "id": 13,
+        "titulo": "El principito, Antoine de Saint-Exupéri",        
+        "stock":0
+    },
+    {
+        "grup": 1,
+        "id": 14,
+        "titulo": "Bushido, el espiritú de Japón, Inazo Nitobe",        
+        "stock":3
+    },
+    {
+        "grup": 2,
+        "id": 21,
+        "titulo": "Proyectores",
+        "stock":3
+    },
+    {
+        "grup": 2,
+        "id": 22,
+        "titulo": "TV Led 50'",
+        "stock":2
+    },
+    {
+        "grup": 2,
+        "id": 23,
+        "titulo": "Parlantes para computadora",
+        "stock":4
+    },
+    {
+        "grup": 2,
+        "id": 24,
+        "titulo": "Parlantes Bluetooth",
+        "stock":2
+    },
+    {
+        "grup": 3,
+        "id": 31,
+        "titulo": "Aula de computación",
+        "stock":2
+    },
+    {
+        "grup": 3,
+        "id": 32,
+        "titulo": "Aula de dibujo técnico",
+        "stock":3
+    },
+    {
+        "grup": 3,
+        "id": 33,
+        "titulo": "Aula taller",
+        "stock":4
+    },
+    {
+        "grup": 3,
+        "id": 34,
+        "titulo": "Aula laboratorio",
+        "stock":2
+    }
+]

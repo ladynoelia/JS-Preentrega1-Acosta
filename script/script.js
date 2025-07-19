@@ -1,25 +1,17 @@
-class Materiales {
-    constructor(grup,id,titulo,stock){
-        this.grup = grup;
-        this.id = id;
-        this.titulo = titulo;        
-        this.stock = stock;
-    }
-};
-
-const mate1 = new Materiales(1, 1, "Estructuras de hormigón armado, Fritz Leonhardt", 0);
-const mate2 = new Materiales(1, 2,  "Orgullo y prejuicio, Jane Austen", 1);
-const mate3 = new Materiales(1, 3,  "El principito, Antoine de Saint-Exupéri", 0);
-const mate4 = new Materiales(1, 4,  "Bushido, el espiritú de Japón, Inazo Nitobe", 3);
-const mate5 = new Materiales(2, 5, "Proyectores", 3);
-const mate6 = new Materiales(2, 6,  "TV", 2);
-const mate7 = new Materiales(2, 7,  "Parlantes", 4);
-const mate8 = new Materiales(3, 8,  "Aula de computación", 2);
-const mate9 = new Materiales(3, 9,  "Aula de dibujo técnico", 3);
-const mate10 = new Materiales(3, 10, "Aula taller", 4);
-
 //Array de todos los materiales. ----------------------------------------------------------------
-const materialDidactico = [mate1, mate2, mate3, mate4, mate5, mate6, mate7, mate8, mate9, mate10];
+let materialDidactico = [];
+//Enlace a la base de datos. ----------------------------------------------------------------
+const url = "./db/data.json";
+
+function obtenerMateriales(){
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            materialDidactico = data;
+            renderizarTarjertas(materialDidactico);
+        })
+};
+obtenerMateriales();
 
 //Elementos del Html ----------------------------------------------------------------
 const seccionTarjetas = document.getElementById('cardsbox');
@@ -29,7 +21,7 @@ const btnCancelar = document.getElementsByClassName('btn-cancel');
 const btnsMisReservas = document.getElementsByClassName('btn-mr');
 
 //Array de los materiales reservados ----------------------------------------------------------------
-const agregadosALaBolsa = JSON.parse(localStorage.getItem('bolsaGuardada')) || [];
+let agregadosALaBolsa = JSON.parse(localStorage.getItem('bolsaGuardada')) || [];
 
 //funciones ppales ----------------------------------------------------------------
 function renderizarTarjertas(arrayDeMateriales){
@@ -46,7 +38,7 @@ function renderizarTarjertas(arrayDeMateriales){
     agregarMaterial();
 };
 
-renderizarTarjertas(materialDidactico);
+//renderizarTarjertas(materialDidactico);
 
 function agregarMaterial() {
     for (const button of grupBtnReservar) {
@@ -67,16 +59,22 @@ function agregarMaterial() {
 };
 
 // Botón Biblioteca ----------------------------------------------------------------
-const biblioteca = materialDidactico.filter(material => material.grup == 1);
-grupoBotones[0].addEventListener('click', () => renderizarTarjertas(biblioteca));
+grupoBotones[0].addEventListener('click', () => {
+    const biblioteca = materialDidactico.filter(material => (material.grup == 1));
+    renderizarTarjertas(biblioteca)
+});
 
 // Botón Audiovisual ----------------------------------------------------------------
-const audiovisual = materialDidactico.filter(material => material.grup == 2);
-grupoBotones[1].addEventListener('click', () => renderizarTarjertas(audiovisual));
+grupoBotones[1].addEventListener('click', () => {
+    const audiovisual = materialDidactico.filter(material => material.grup == 2);
+    renderizarTarjertas(audiovisual)
+});
 
 // Botón Aulas ----------------------------------------------------------------
-const aulas = materialDidactico.filter(material => material.grup == 3);
-grupoBotones[2].addEventListener('click', () => renderizarTarjertas(aulas));
+grupoBotones[2].addEventListener('click', () => {
+    const aulas = materialDidactico.filter(material => material.grup == 3);
+    renderizarTarjertas(aulas)
+});
 
 // Botón Mostrar todo ----------------------------------------------------------------
 grupoBotones[3].addEventListener('click', () => renderizarTarjertas(materialDidactico));
