@@ -8,19 +8,19 @@
     {
         "grup": 1,
         "id": 12,
-        "titulo": "Orgullo y prejuicio, Jane Austen",        
+        "titulo": "Instalaciones elétricas en edificios, Néstor Quadri",        
         "stock":1
     },
     {
         "grup": 1,
         "id": 13,
-        "titulo": "El principito, Antoine de Saint-Exupéri",        
+        "titulo": "Manual práctico de construcción, Jaime Nisnovich",        
         "stock":0
     },
     {
         "grup": 1,
         "id": 14,
-        "titulo": "Bushido, el espiritú de Japón, Inazo Nitobe",        
+        "titulo": "Apuntes de obra, Norberto Cussi",        
         "stock":3
     },
     {
